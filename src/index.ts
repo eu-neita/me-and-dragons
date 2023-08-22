@@ -5,6 +5,8 @@ import Race, {
   Orc,
 } from './Races';
 
+import Energy from './Energy';
+
 export default Race;
 
 export {
@@ -12,4 +14,5 @@ export {
   Elf,
   Halfling,
   Orc,
+  Energy,
 };
