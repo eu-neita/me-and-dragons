@@ -3,28 +3,83 @@ import Energy from './Energy';
 import Race, { Elf } from './Races';
 import getRandomInt from './utils';
 
-class Character {
-  private race : Race;
-  private archetype: Archetype;
+export default class Character {
+  private _race : Race;
+  private _archetype: Archetype;
   private maxLifePoints: number;
-  private lifePoints: number;
-  private strength: number;
-  private defense: number;
-  private dexterity: number;
-  private energy: Energy;
+  private _lifePoints: number;
+  private _strength: number;
+  private _defense: number;
+  private _dexterity: number;
+  private _energy: Energy;
   private _name: string;
 
   constructor(name: string) {
     this._name = name;
-    this.dexterity = 10;
-    this.race = new Elf(this._name, 10);
-    this.archetype = new Mage(this._name);
+    this._dexterity = 10;
+    this._race = new Elf(this._name, 10);
+    this._archetype = new Mage(this._name);
     this.maxLifePoints = (this.race.maxLifePoints / 2);
-    this.lifePoints = this.race.maxLifePoints;
-    this.strength = getRandomInt(1, 10);
-    this.defense = getRandomInt(1, 10);
-    this.energy = { 
+    this._lifePoints = this.race.maxLifePoints;
+    this._strength = getRandomInt(1, 10);
+    this._defense = getRandomInt(1, 10);
+    this._energy = { 
       type_: this.archetype.energyType,
       amount: getRandomInt(1, 10) };
+  }
+
+  get race(): Race {
+    return this._race;
+  }
+
+  get archetype(): Archetype {
+    return this._archetype;
+  }
+
+  get lifePoints(): number {
+    return this._lifePoints;
+  }
+
+  get strength(): number {
+    return this._strength;
+  }
+
+  get defense(): number {
+    return this._defense;
+  }
+
+  get dexterity(): number {
+    return this._dexterity;
+  }
+
+  get energy(): Energy {
+    // Retornando uma cópia do objeto para evitar alterações
+    return { ...this._energy };
+  }
+
+  receiveDamage(attackPoints: number): number {
+    const damage = attackPoints - this.defense;
+    this._lifePoints -= (damage > 0) ? damage : 1;
+    if (this.lifePoints <= 0) this._lifePoints = -1;
+    return this.lifePoints;
+  }
+
+  attack(enemy: Character): void {
+    enemy.receiveDamage(this.strength);
+  }
+
+  levelUp(): void {
+    const increment = getRandomInt(1, 10);
+    this.maxLifePoints = Math
+      .min(this.maxLifePoints + increment, this._lifePoints);
+    this._strength += increment;
+    this._dexterity += increment;
+    this._defense += increment;
+    this.energy.amount = 10; // Energia cheia
+    this._lifePoints = this.maxLifePoints; // Vida cheia
+  }
+
+  special(enemy: Character): void {
+    enemy.receiveDamage(this.strength + this.strength + this.strength);
   }
 }
