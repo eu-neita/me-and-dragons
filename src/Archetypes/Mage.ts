@@ -15,7 +15,7 @@ class Mage extends Archetype {
   }
 
   static createdArchetypeInstances(): number {
-    return this._createdArchetypeInstances;
+    return Mage._createdArchetypeInstances;
   }
 }
 
