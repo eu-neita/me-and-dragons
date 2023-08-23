@@ -53,7 +53,6 @@ export default class Character {
   }
 
   get energy(): Energy {
-    // Retornando uma cópia do objeto para evitar alterações
     return { ...this._energy };
   }
 
@@ -62,24 +61,5 @@ export default class Character {
     this._lifePoints -= (damage > 0) ? damage : 1;
     if (this.lifePoints <= 0) this._lifePoints = -1;
     return this.lifePoints;
-  }
-
-  attack(enemy: Character): void {
-    enemy.receiveDamage(this.strength);
-  }
-
-  levelUp(): void {
-    const increment = getRandomInt(1, 10);
-    this.maxLifePoints = Math
-      .min(this.maxLifePoints + increment, this._lifePoints);
-    this._strength += increment;
-    this._dexterity += increment;
-    this._defense += increment;
-    this.energy.amount = 10; // Energia cheia
-    this._lifePoints = this.maxLifePoints; // Vida cheia
-  }
-
-  special(enemy: Character): void {
-    enemy.receiveDamage(this.strength + this.strength + this.strength);
   }
 }
