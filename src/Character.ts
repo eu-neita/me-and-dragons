@@ -62,4 +62,23 @@ export default class Character {
     if (this.lifePoints <= 0) this._lifePoints = -1;
     return this.lifePoints;
   }
+
+  attack(enemy: Character): void {
+    enemy.receiveDamage(this.strength);
+  }
+
+  levelUp(): void {
+    const increment = getRandomInt(1, 10);
+    const lifepoints = this._lifePoints;
+    this._strength += increment;
+    this._dexterity += increment;
+    this._defense += increment;
+    this._energy.amount = 10;
+    this._lifePoints = (lifepoints + getRandomInt(1, 10)) 
+    > lifepoints ? lifepoints : (lifepoints + getRandomInt(1, 10));
+  }
+
+  special(enemy: Character): void {
+    enemy.receiveDamage(this.strength + this.strength + this.strength);
+  }
 }
